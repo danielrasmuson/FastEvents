@@ -1,0 +1,6 @@
+Server/node_modules
+Server/client_secret.json
+Server/.env
+App/*.js
+App/node_modules
+Server/**/*es5*

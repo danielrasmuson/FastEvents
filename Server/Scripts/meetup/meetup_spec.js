@@ -1,10 +1,16 @@
 require('dotenv').load(); // load .env
 var meetup = require('./meetup');
 
-describe('meetup wrapper', ()=>{
-  it('should fetch events', (done)=>{
+fdescribe('meetup wrapper', ()=>{
+  fit('should fetch events', (done)=>{
     // meetup.query();
-    expect('a').toEqual('a');
-    done();
+    meetup.get().forEach((result)=>{
+      console.log(result)
+      expect('a').toEqual('b');
+      done();
+    }, (err)=>{
+      console.log(error)
+      done();
+    });
   })
 })

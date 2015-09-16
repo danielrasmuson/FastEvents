@@ -37,7 +37,10 @@ meetup.query({
     // time: "2w"
   }).forEach((events)=>{
   getAuthFromToken(TOKEN).forEach((auth)=>{
-    _.slice(events, 0, 2).forEach((event)=>{
+    // TODO I need throttle these to 5 per second
+    // TODO if the datetime and invalid we should drop the request
+      // TODO and log the result
+    events.forEach((event)=>{
       console.log(_.get(event, 'event_url'));
       console.log(_.get(event, 'group.group_lat'));
       console.log(_.get(event, 'group.group_lon'));

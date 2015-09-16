@@ -10,7 +10,7 @@ var htmlToText = require('html-to-text');
 // make calendar.auth({token: token}) work
 // but also calendar.auth({code: code}) work
 
-var TOKEN = "ya29.8AGJOxda09p0FfGDZHpmutS_v1cbPTa4BmX7PAs9Fz8OPWjlKxGaVVYhD5nMKKdJ1zMRWQ";
+var TOKEN = "ya29.8AHJxws9KS3POtZA9FjZ7Uw7cu3BltcZhTAsAQzOHKa11D0YkOPx5abUiVV93p0Swjs_oA";
 
 function formatLocalDate(date) {
   var tzo = -date.getTimezoneOffset(),
@@ -37,24 +37,24 @@ meetup.query({
     // time: "2w"
   }).forEach((events)=>{
   getAuthFromToken(TOKEN).forEach((auth)=>{
-    events.forEach((event)=>{
-      console.log(event.event_url);
-      console.log(event.group.group_lat);
-      console.log(event.group.group_lon);
+    _.slice(events, 0, 2).forEach((event)=>{
+      console.log(_.get(event, 'event_url'));
+      console.log(_.get(event, 'group.group_lat'));
+      console.log(_.get(event, 'group.group_lon'));
       console.log();
       calendar.createEvent({
         auth: auth,
         start: {
-          'dateTime': formatLocalDate(new Date(event.time)),
+          'dateTime': formatLocalDate(new Date(_.get(event, 'time'))),
         },
         end: {
-          'dateTime': formatLocalDate(new Date(event.time+event.duration)),
+          'dateTime': formatLocalDate(new Date(_.get(event, 'time')+_.get(event, 'duration'))),
         },
-        title: event.group.name,
-        description: "LINK: "+event.event_url+"\n\n"+htmlToText.fromString(event.description, {
+        title: _.get(event, 'group.name'),
+        description: "LINK: "+_.get(event, 'event_url')+"\n\n"+htmlToText.fromString(_.get(event, 'description'), {
             wordwrap: 130
           }),
-        location: event.venue.address_1+" "+event.venue.city,
+        location: _.get(event, 'venue.address_1')+" "+_.get(event, 'venue.city'),
         attendees: [
           {'email': 'dan123911@gmail.com'}
         ]

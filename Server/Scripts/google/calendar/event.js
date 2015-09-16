@@ -1,7 +1,7 @@
 var google = require('googleapis');
 var Rx = require('rx');
 
-function createEvent({auth, start, end, title, description, attendees, summary}) {
+function createEvent({auth, start, end, title, description, attendees, summary, location}) {
   return Rx.Observable.create((observer)=>{
     var calendar = google.calendar('v3');
     calendar.events.insert({
@@ -12,7 +12,8 @@ function createEvent({auth, start, end, title, description, attendees, summary})
         end: end,
         summary: title,
         description: description,
-        attendees: attendees
+        attendees: attendees,
+        location: location
       }
     }, function(err, response) {
       if (err) {

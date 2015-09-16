@@ -1,7 +1,7 @@
 var Rx = require('rx');
 var request = require('request');
 
-function query({and_text=undefined, category=undefined, city=undefined, country=undefined, fields=undefined, lat=undefined, limited_events=undefined, lon=undefined, radius=undefined, state=undefined, status=undefined, text=undefined, text_format=undefined, topic=undefined, zip=undefined, time=undefined}){
+function query({and_text, category, city, country, fields, lat, limited_events, lon, radius, state, status, text, text_format, topic, zip, time}){
   return Rx.Observable.create((observer)=>{
     request({
       url: "https://api.meetup.com/2/open_events",

@@ -4,15 +4,12 @@ var calendar = require('./google/calendar/event');
 var _ = require('lodash');
 var getAuthFromToken = require('./google/calendar/oauthToken').getAuthFromToken;
 
+var htmlToText = require('html-to-text');
+
 // todo
 // make calendar.auth({token: token}) work
 // but also calendar.auth({code: code}) work
 
-// getAuthFromToken(INVALID_TOKEN)
-//   .forEach(function(auth){
-//     expect(auth.credentials.access_token).toEqual('bbbbb');
-//     done();
-//   })
 var TOKEN = "ya29.8AGJOxda09p0FfGDZHpmutS_v1cbPTa4BmX7PAs9Fz8OPWjlKxGaVVYhD5nMKKdJ1zMRWQ";
 
 function formatLocalDate(date) {
@@ -39,10 +36,9 @@ meetup.query({
     radius: "2"
     // time: "2w"
   }).forEach((events)=>{
-  // only doing the first 10 events for now
   getAuthFromToken(TOKEN).forEach((auth)=>{
-    _.slice(events, 0, 3).forEach((event)=>{
-      console.log(event.group.event_url);
+    events.forEach((event)=>{
+      console.log(event.event_url);
       console.log(event.group.group_lat);
       console.log(event.group.group_lon);
       console.log();
@@ -55,7 +51,10 @@ meetup.query({
           'dateTime': formatLocalDate(new Date(event.time+event.duration)),
         },
         title: event.group.name,
-        description: event.description,
+        description: "LINK: "+event.event_url+"\n\n"+htmlToText.fromString(event.description, {
+            wordwrap: 130
+          }),
+        location: event.venue.address_1+" "+event.venue.city,
         attendees: [
           {'email': 'dan123911@gmail.com'}
         ]

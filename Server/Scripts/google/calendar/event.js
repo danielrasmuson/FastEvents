@@ -1,4 +1,5 @@
 var google = require('googleapis');
+var Rx = require('rx');
 
 function createEvent({auth, start, end, title, description, attendees, summary}) {
   return Rx.Observable.create((observer)=>{

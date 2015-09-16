@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-var app = require('../app');
+var app = require('../app_es5');
 var debug = require('debug')('FastEvents:server');
 var http = require('http');
 

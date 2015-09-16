@@ -33,11 +33,18 @@ gulp.task('babel', function () {
     .pipe(gulp.dest('.'))
 });
 
-gulp.task('test', ['babel'], function(){
+var test = gulp.task('test', ['babel'], function(){
   return gulp.src(TEST_FILES)
     .pipe(jasmine())
 })
 
-gulp.task('dev', function(){
-  return gulp.watch(DEVELOPMENT_FILES, ['babel', 'test'])
+// gulp.task('dev', function(){
+//   return gulp.watch(DEVELOPMENT_FILES, ['test'])
+// });
+// function() {
+//     return gulp.watch(paths.scripts,['jscs','jshint']);
+// });
+gulp.task('dev', function() {
+    return gulp.src(DEVELOPMENT_FILES)
+      .pipe(test);
 });

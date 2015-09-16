@@ -38,13 +38,6 @@ var test = gulp.task('test', ['babel'], function(){
     .pipe(jasmine())
 })
 
-// gulp.task('dev', function(){
-//   return gulp.watch(DEVELOPMENT_FILES, ['test'])
-// });
-// function() {
-//     return gulp.watch(paths.scripts,['jscs','jshint']);
-// });
-gulp.task('dev', function() {
-    return gulp.src(DEVELOPMENT_FILES)
-      .pipe(test);
+gulp.task('dev', function(){
+  return gulp.watch(DEVELOPMENT_FILES, ['test'])
 });

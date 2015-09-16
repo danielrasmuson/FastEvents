@@ -2,8 +2,11 @@ var gulp = require('gulp');
 var babel = require('gulp-babel');
 var intercept = require('gulp-intercept');
 var _ = require('lodash');
+var jasmine = require('gulp-jasmine');
+var runSequence = require('run-sequence');
 
 var DEVELOPMENT_FILES = ['./**/*.js', '!node_modules/**/*', '!./**/*_es5*'];
+var TEST_FILES = ['!node_modules/**/*', './**/*_es5_spec.js'];
 
 gulp.task('babel', function () {
   return gulp.src(DEVELOPMENT_FILES)
@@ -22,7 +25,7 @@ gulp.task('babel', function () {
 
       // Change require statements
       // matches require('./.*') and replaces with require('./.*_es5')
-      file.contents = new Buffer(file.contents.toString().replace(/(require\(\'\.\/(.|\n)+?)\'\)/g, "$1_es5')");
+      file.contents = new Buffer(file.contents.toString().replace(/(require\(\'\.\/(.|\n)+?)\'\)/g, "$1_es5')"));
 
       return file;
     }))
@@ -30,6 +33,11 @@ gulp.task('babel', function () {
     .pipe(gulp.dest('.'))
 });
 
+gulp.task('test', function(){
+  return gulp.src(TEST_FILES)
+    .pipe(jasmine())
+})
+
 gulp.task('dev', function(){
-  return gulp.watch(DEVELOPMENT_FILES, ['babel'])
+  return gulp.watch(DEVELOPMENT_FILES, ['babel', 'test'])
 });

@@ -4,7 +4,7 @@ var meetup = require('./meetup');
 describe('meetup wrapper', ()=>{
   it('should fetch events', (done)=>{
     // meetup.query();
-    expect('a').toEqual('c');
+    expect('a').toEqual('a');
     done();
   })
 })

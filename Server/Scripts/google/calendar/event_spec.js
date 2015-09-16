@@ -22,8 +22,12 @@ describe('google calendar event', function(){
          attendees: [
           {'email': 'dan123911@gmail.com'}
          ]
+       }).forEach((response)=>{
+         expect(response).toBeDefined();
+         done();
+       },(err)=>{
+         expect('creating a google calendar threw an error: ', err).toEqual('');
        });
-       done();
      })
  })
 })

@@ -4,7 +4,7 @@ var getAuthClient = require('./oauthClient').getAuthClient;
 function getAuthFromToken(token){
   return Rx.Observable.create(function(observer){
     getAuthClient().forEach(function(authClient){
-      // refresh_token: 'REFRESH TOKEN HERE'
+      // TODO refresh_token: 'REFRESH TOKEN HERE'
       authClient.setCredentials({
         access_token: token
       });

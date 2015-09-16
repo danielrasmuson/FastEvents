@@ -1,8 +1,7 @@
 require('dotenv').load(); // load .env
 var meetup = require('./meetup/meetup');
-var calendar = require('./google/calendar/event');
+var calendar = require('./google/calendar/calendar');
 var _ = require('lodash');
-var getAuthFromToken = require('./google/calendar/oauthToken').getAuthFromToken;
 
 var htmlToText = require('html-to-text');
 
@@ -36,11 +35,12 @@ meetup.query({
     radius: "2"
     // time: "2w"
   }).forEach((events)=>{
-  getAuthFromToken(TOKEN).forEach((auth)=>{
+  calendar.auth({token: TOKEN}).forEach((auth)=>{
     // TODO I need throttle these to 5 per second
     // TODO if the datetime and invalid we should drop the request
       // TODO and log the result
-    events.forEach((event)=>{
+    // events.forEach((event)=>{
+    _.slice(events, 0, 1).forEach((event)=>{
       console.log(_.get(event, 'event_url'));
       console.log(_.get(event, 'group.group_lat'));
       console.log(_.get(event, 'group.group_lon'));

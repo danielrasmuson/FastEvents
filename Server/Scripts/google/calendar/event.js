@@ -6,7 +6,7 @@ function createEvent({auth, start, end, title, description, attendees, summary, 
     var calendar = google.calendar('v3');
     calendar.events.insert({
       auth: auth,
-      calendarId: 'primary',
+      calendarId: '5hj6m57a6rt2muull7t62dka90',
       resource: {
         start: start,
         end: end,

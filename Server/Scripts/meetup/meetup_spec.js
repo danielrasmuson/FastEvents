@@ -1,8 +1,8 @@
 require('dotenv').load(); // load .env
 var meetup = require('./meetup');
 
-fdescribe('meetup wrapper', ()=>{
-  fit('should fetch events', (done)=>{
+describe('meetup wrapper', ()=>{
+  it('should fetch events', (done)=>{
     // meetup.query();
     meetup.query({category: "34"}).forEach((events)=>{
       expect(events.length).toBeGreaterThan(0);

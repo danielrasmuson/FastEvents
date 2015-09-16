@@ -1,18 +1,18 @@
 var Rx = require('rx');
 var request = require('request');
 
-function get(){
+function query({and_text=undefined, category=undefined, city=undefined, country=undefined, fields=undefined, lat=undefined, limited_events=undefined, lon=undefined, radius=undefined, state=undefined, status=undefined, text=undefined, text_format=undefined, topic=undefined, zip=undefined, time=undefined}){
   return Rx.Observable.create((observer)=>{
     request({
       url: "https://api.meetup.com/2/open_events",
       qs: {
         key: process.env.MEETUP_API_KEY,
-        category: "34"
 
         // Changes the interpretation of the "text" field from OR'd terms to AND'd terms
         and_text: and_text,
 
         // Return events in the specified category or categories specified by commas. This is the category id returned by the Categories method.
+        // category: "34"
         category: category,
 
         // A valid city
@@ -57,14 +57,13 @@ function get(){
         // A valid US zip code, limits the returned groups to those within radius miles
         zip: zip,
 
+        // order by
         // ordering is approximate and will not exactly match the values in the "distance" field.
-        distance: distance,
-
+        // distance: distance,
         // (default order) ascending
-        time: time,
-
+        // time: time,
         // you will likely want to specify "desc=true" to get the best trending results first.
-        trending: trending,
+        // trending: trending,
 
       }
     }, function(err, res, body){
@@ -79,5 +78,5 @@ function get(){
 }
 
 module.exports = {
-  get: get
+  query:query
 }

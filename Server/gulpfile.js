@@ -33,7 +33,7 @@ gulp.task('babel', function () {
     .pipe(gulp.dest('.'))
 });
 
-var test = gulp.task('test', ['babel'], function(){
+gulp.task('test', ['babel'], function(){
   return gulp.src(TEST_FILES)
     .pipe(jasmine())
 })

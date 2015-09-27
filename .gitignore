@@ -4,3 +4,5 @@ Server/.env
 App/*.js
 App/node_modules
 Server/**/*es5*
+
+.floo*

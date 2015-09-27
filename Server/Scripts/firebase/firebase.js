@@ -8,12 +8,15 @@
 var request = require('request');
 var DOMAIN = "https://fastevents.firebaseio.com/";
 
-function getUserData(uid, cb){
-  request.get(DOMAIN+ 'users/' + uid + '.json', function(err, response, body){
-    cb(JSON.parse(body));
+function user(uid){
+  return Rx.Observable.create((observer)=>{
+    request.get(DOMAIN+ 'users/' + uid + '.json', function(err, response, body){
+      observer.onNext(JSON.parse(body));
+      observer.onCompleted();
+    });
   });
 }
 
 module.exports = {
-  getUserData: getUserData
+  user: user
 }

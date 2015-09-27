@@ -14,7 +14,6 @@ function getUserData(uid, cb){
   });
 }
 
-getUserData('8b7a898d-6085-4fbe-80f9-958ebca0928e', function(userData){
-  console.log(userData)
-});
-
+module.exports = {
+  getUserData: getUserData
+}

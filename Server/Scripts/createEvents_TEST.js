@@ -5,11 +5,7 @@ var _ = require('lodash');
 
 var htmlToText = require('html-to-text');
 
-// todo
-// make calendar.auth({token: token}) work
-// but also calendar.auth({code: code}) work
-
-var TOKEN = "ya29.8AHJxws9KS3POtZA9FjZ7Uw7cu3BltcZhTAsAQzOHKa11D0YkOPx5abUiVV93p0Swjs_oA";
+var TOKEN = "ya29._AHuZ9ZmC6byAwA0Dl4059M-1yxlRJ-m6FJ0SjvEVszHKK_pZBikBWwhfyPCrUxAAPK6";
 
 function formatLocalDate(date) {
   var tzo = -date.getTimezoneOffset(),
@@ -36,16 +32,10 @@ meetup.query({
     // time: "2w"
   }).forEach((events)=>{
   calendar.auth({token: TOKEN}).forEach((auth)=>{
-    // TODO I need throttle these to 5 per second
     // TODO if the datetime and invalid we should drop the request
       // TODO and log the result
-    // events.forEach((event)=>{
-    _.slice(events, 0, 1).forEach((event)=>{
-      console.log(_.get(event, 'event_url'));
-      console.log(_.get(event, 'group.group_lat'));
-      console.log(_.get(event, 'group.group_lon'));
-      console.log();
-      calendar.createEvent({
+    events.forEach((event)=>{
+      calendar.queueEvent({
         auth: auth,
         start: {
           'dateTime': formatLocalDate(new Date(_.get(event, 'time'))),
@@ -61,11 +51,17 @@ meetup.query({
         attendees: [
           {'email': 'dan123911@gmail.com'}
         ]
-      }).forEach(function(success){
-        console.log('event created');
-      },(err)=>{
-        console.log(err);
       })
     })
   })
+
+  // after all the events have been you can send the requests
+  calendar.emptyEventQueue().forEach((createdEvent)=>{
+    console.log('created an event!');
+  }, function(err) {
+    console.log('creating a google calendar threw an error: ', err);
+  }, function() {
+    console.log('done creating events');
+  })
+
 })

@@ -1,12 +1,15 @@
-var google = require('googleapis');
-var Rx = require('rx');
+var google = require('googleapis'),
+    Rx = require('rx'),
+    _ = require('lodash'),
+    queueEventRequests = [];
 
-function createEvent({auth, start, end, title, description, attendees, summary, location}) {
-  return Rx.Observable.create((observer)=>{
+function queueEvent({auth, start, end, title, description, attendees, summary, location}) {
+  queueEventRequests.push(Rx.Observable.create((observer)=>{
     var calendar = google.calendar('v3');
     calendar.events.insert({
       auth: auth,
-      calendarId: '5hj6m57a6rt2muull7t62dka90',
+      // calendarId: '5hj6m57a6rt2muull7t62dka90',
+      calendarId: 'dan123911@gmail.com',
       resource: {
         start: start,
         end: end,
@@ -22,8 +25,32 @@ function createEvent({auth, start, end, title, description, attendees, summary, 
         observer.onNext(response);
       }
     });
-  })
+  }))
 }
 
+function emptyEventQueue(){
+  return Rx.Observable.create(function(observer){
+    var eventGroups = _.chunk(queueEventRequests, 5);
+    eventGroups.forEach(function(eventGroup, groupIndex){
+      setTimeout(function(){
+        eventGroup.forEach(function(request, requestIndex){
+          function isLastRequest(){
+            return (requestIndex+1 == eventGroup.length && groupIndex+1 == eventGroups.length);
+          }
+          request.forEach(function(status){
+            observer.onNext(status);
+            isLastRequest() ? observer.onCompleted() : null;
+          }, function(err){
+            observer.onError(err);
+            isLastRequest() ? observer.onCompleted() : null;
+          })
+        })
+      }, groupIndex*1000)
+    })
+  });
+}
 
-module.exports.createEvent = createEvent;
+module.exports = {
+  queueEvent: queueEvent,
+  emptyEventQueue: emptyEventQueue
+};

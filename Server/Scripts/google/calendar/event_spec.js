@@ -1,33 +1,40 @@
 require('dotenv').load(); // load .env
-var createEvent = require('./event').createEvent;
+var queueEvent = require('./event').queueEvent;
+var emptyEventQueue = require('./event').emptyEventQueue;
 var getAuthFromToken = require('./oauthToken').getAuthFromToken;
 
-describe('google calendar event', function(){
- it('should create an event', function(done){
-   // you have to manually update this token
-   getAuthFromToken('ya29.7wG2rfcLHPJJ5GX2zGcNCVaE_gjSmMo-lpe9GrCE2btrp13AlEM_4CETgm9kb-7-tQiryQ')
-     .forEach(function(auth){
-       createEvent({
-         auth,
-         start: {
-          'dateTime': '2015-09-15T09:00:00-07:00',
-          'timeZone': 'America/Los_Angeles',
-         },
-         end: {
-          'dateTime': '2015-09-15T17:00:00-07:00',
-          'timeZone': 'America/Los_Angeles',
-         },
-         title: 'hello',
-         description: 'A chance to hear more about Google\'s developer products.',
-         attendees: [
-          {'email': 'dan123911@gmail.com'}
-         ]
-       }).forEach((response)=>{
-         expect(response).toBeDefined();
-         done();
-       },(err)=>{
-         expect('creating a google calendar threw an error: ', err).toEqual('');
-       });
-     })
- })
+fdescribe('google calendar event', function() {
+  fit('should create an event', function(done) {
+    // you have to manually update this token
+    getAuthFromToken('ya29._AHuZ9ZmC6byAwA0Dl4059M-1yxlRJ-m6FJ0SjvEVszHKK_pZBikBWwhfyPCrUxAAPK6')
+      .forEach(function(auth) {
+        queueEvent({
+          auth,
+          start: {
+              'dateTime': '2015-09-15T09:00:00-07:00',
+              'timeZone': 'America/Los_Angeles',
+            },
+            end: {
+              'dateTime': '2015-09-15T17:00:00-07:00',
+              'timeZone': 'America/Los_Angeles',
+            },
+            title: 'hello',
+            description: 'A chance to hear more about Google\'s developer products.',
+            attendees: [{
+              'email': 'dan123911@gmail.com'
+            }]
+        })
+
+        emptyEventQueue().forEach(function(createdEvent) {
+          console.log(createdEvent);
+          expect(createdEvent).toBeDefined();
+        }, function(err) {
+          expect('creating a google calendar threw an error: ', err).toEqual('');
+          expect(err).not.toBeDefined()
+        }, function(allCreatedEvents) {
+          done();
+        })
+
+      })
+  })
 })

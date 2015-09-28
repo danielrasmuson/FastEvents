@@ -1,5 +1,6 @@
 var auth = require('./oauthToken');
-var createEvent = require('./event').createEvent;
+var queueEvent = require('./event').queueEvent;
+var emptyEventQueue = require('./event').emptyEventQueue;
 var Rx = require('rx');
 
 const calendar = {
@@ -18,7 +19,8 @@ const calendar = {
       }
     })
   },
-  createEvent: createEvent
+  queueEvent: queueEvent,
+  emptyEventQueue: emptyEventQueue
 }
 
 module.exports = calendar

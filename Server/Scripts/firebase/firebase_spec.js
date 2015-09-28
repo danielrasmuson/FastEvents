@@ -3,8 +3,8 @@ require('dotenv').load(); // load .env
 
 var USER_ID = '8b7a898d-6085-4fbe-80f9-958ebca0928e'
 
-fdescribe('firebase api', function () {
-  fit('should fetch user data', function (done) {
+describe('firebase api', function () {
+  it('should fetch user data', function (done) {
     firebase.user(USER_ID).forEach(function(userData){
       expect(userData).toBeDefined();
       expect(userData.calendarId()).toEqual('5hj6m57a6rt2muull7t62dka90');

@@ -6,3 +6,5 @@ App/node_modules
 Server/**/*es5*
 
 .floo*
+
+Mockup/bower_components

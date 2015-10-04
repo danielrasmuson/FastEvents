@@ -26,6 +26,16 @@ function refreshUserEvents(USER_ID, maxEvents){
               events = _.slice(events, 0, maxEvents);
             }
 
+            // dont want address to be
+            // 'undefined undefined'
+            function getLocation(event){
+              let address = _.get(event, 'venue.address_1');
+              address = address ? address : '';
+              let city = _.get(event, 'venue.city');
+              city = city ? city : '';
+              return address+' '+city;
+            }
+
             events.forEach((event)=>{
               calendar.queueEvent({
                 auth: auth,
@@ -40,7 +50,7 @@ function refreshUserEvents(USER_ID, maxEvents){
                 description: 'LINK: ' + _.get(event, 'event_url') + '\n\n' + htmlToText.fromString(_.get(event, 'description'), {
                     wordwrap: 130
                   }),
-                location: _.get(event, 'venue.address_1')+' '+_.get(event, 'venue.city'),
+                location: getLocation(event),
                 attendees: [
                   {'email': userData.email()}
                 ]

@@ -70,13 +70,18 @@ function query({and_text, category, city, country, fields, lat, limited_events, 
         if (err){
           observer.onError(err);
         } else{
-          observer.onNext(JSON.parse(body).results);
+          var events = JSON.parse(body).results;
+          if (events === undefined){
+            observer.onError('Meetup Returned no events for query: {"and_text": '+and_text+', "category": '+category+', "city": '+city+', "country": '+country+', "fields": '+fields+', "lat": '+lat+', "limited_events": '+limited_events+', "lon": '+lon+', "radius": '+radius+', "state": '+state+', "status": '+status+', "text": '+text+', "text_format": '+text_format+', "topic": '+topic+', "zip": '+zip+', "time": '+time+'}');
+          } else{
+            observer.onNext(events);
+          }
         }
       }
-    )
-  })
+    );
+  });
 }
 
 module.exports = {
   query:query
-}
+};

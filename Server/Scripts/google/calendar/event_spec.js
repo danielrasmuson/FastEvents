@@ -26,7 +26,6 @@ fdescribe('google calendar event', function() {
         })
 
         emptyEventQueue().forEach(function(createdEvent) {
-          console.log(createdEvent);
           expect(createdEvent).toBeDefined();
         }, function(err) {
           expect('creating a google calendar threw an error: ', err).toEqual('');

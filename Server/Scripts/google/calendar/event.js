@@ -3,13 +3,13 @@ var google = require('googleapis'),
     _ = require('lodash'),
     queueEventRequests = [];
 
-function queueEvent({auth, start, end, title, description, attendees, summary, location}) {
+// TODO this calendarId should not be hardcoded
+function queueEvent({auth, start, end, title, description, attendees, summary, location, calendarId}) {
   queueEventRequests.push(Rx.Observable.create((observer)=>{
     var calendar = google.calendar('v3');
     calendar.events.insert({
       auth: auth,
-      // calendarId: '5hj6m57a6rt2muull7t62dka90',
-      calendarId: 'dan123911@gmail.com',
+      calendarId: calendarId,
       resource: {
         start: start,
         end: end,
@@ -25,7 +25,7 @@ function queueEvent({auth, start, end, title, description, attendees, summary, l
         observer.onNext(response);
       }
     });
-  }))
+  }));
 }
 
 function emptyEventQueue(){
@@ -43,10 +43,10 @@ function emptyEventQueue(){
           }, function(err){
             observer.onError(err);
             isLastRequest() ? observer.onCompleted() : null;
-          })
-        })
-      }, groupIndex*1000)
-    })
+          });
+        });
+      }, groupIndex*1000);
+    });
   });
 }
 

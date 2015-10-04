@@ -8,7 +8,7 @@ describe('meetup wrapper', ()=>{
       expect(events.length).toBeGreaterThan(0);
       done();
     }, (err)=>{
-      console.log(error)
+      expect(err).toBeUndefined();
       done();
     });
   })

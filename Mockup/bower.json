@@ -1,0 +1,19 @@
+{
+  "name": "Mockup",
+  "version": "0.0.0",
+  "homepage": "https://github.com/danielrasmuson/FastEvents",
+  "authors": [
+    "Daniel Rasmuson <dan123911@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.5"
+  }
+}

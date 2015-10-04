@@ -25,7 +25,8 @@ function User(firebaseObj) {
     return this.user.calendar.google.calendar_id;
   };
   this.calendarToken = function() {
-    return this.user.calendar.google.token.access_token;
+    const tokenData = this.user.calendar.google.token;
+    return {token: tokenData.access_token, refreshToken: tokenData.refresh_token};
   };
   this.location = function() {
     return this.user.location;
@@ -33,8 +34,11 @@ function User(firebaseObj) {
   this.email = function() {
     return this.user.email;
   };
-  this.apiFilters = function() {
-    return this.user.event_preferences;
+  this.meetupCategory = function() {
+    return Object.keys(this.user.event_preferences.meetup.categories)[0];
+  }; 
+  this.eventRadius = function() {
+    return this.user.event_preferences.max_miles;
   }; 
 }
 

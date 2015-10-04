@@ -1,16 +1,24 @@
 var Rx = require('rx');
 var getAuthClient = require('./oauthClient').getAuthClient;
 
-function getAuthFromToken(token){
+function getAuthFromToken(token, refreshToken){
   return Rx.Observable.create(function(observer){
     getAuthClient().forEach(function(authClient){
-      // TODO refresh_token: 'REFRESH TOKEN HERE'
       authClient.setCredentials({
-        access_token: token
+        access_token: token,
+        refresh_token: refreshToken
       });
-      observer.onNext(authClient);
-    })
-  })
+      authClient.refreshAccessToken(function(err, tokens) {
+        if (err){
+          observer.onError(err);
+        } else{
+          authClient.setCredentials(tokens);
+          observer.onNext(authClient);
+          observer.onCompleted();
+        }
+      });
+    });
+  });
 }
 
 function getAuthFromCode(code){
@@ -22,10 +30,11 @@ function getAuthFromCode(code){
         } else{
           authClient.credentials = token;
           observer.onNext(authClient);
+          observer.onCompleted();
         }
       });
-    })
-  })
+    });
+  });
 }
 
 module.exports = {
